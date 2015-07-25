@@ -22,14 +22,19 @@ I have randomly selected 75% of “pml-training.csv” to train my models.
 
 
 ###Exploratory Data Analysis
-Initially, I would like to better understand my variables, and how they related to my outcome and one another. I first apply the `summary(mainTrain1)` function on the dataset. 
-
-
+Initially, I would like to better understand my variables, and how they related to my outcome and one another. I first apply the `summary(mainTrain1)` function on the dataset. From there, I started considering the relationships between the explanatory variables with Q-plots and 
 ```
-Code Sample
+qplot(pitch_dumbbell, total_accel_dumbbell, colour=classe, data=training)   # sample Q-plot
+qplot(total_accel_forearm, colour=classe, data=training, geom="density")    # sample Density Plots
 ```
+Q-plots and Density Plots show some noticable differences in the classes; however, it is evident  that we will consider interations between sets of explanatory features -- I will use principle components for this. 
 
-
-
-
-
+#####Principle Components Analysis
+I started by finding the most correlated variables among my potential features. 
+```
+M <- abs(cor(training[,7:58]))
+diag(M) <- 0
+which(M > 0.8, arr.ind = T)
+```
+This output revealed several correlated features. I've grouped these into "sets" below.
+- Set 1: 
