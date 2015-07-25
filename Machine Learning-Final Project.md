@@ -11,9 +11,10 @@ Dumbbell Biceps Curl in five different fashions:
 
 Read more: http://groupware.les.inf.puc-rio.br/har#ixzz3gv6LfTpo
 
-To cleanse the data, I have removed features with missing data. With the remaining features, I realize that they are aggregated into two types of groups. 
+To cleanse the data, I have removed features with missing data. With the remaining features, I realize that they are aggregated into two types of groups. To simply certain portions of the analysis, I will analyze data within these "sub-feature" groupings. 
 - *Body Dimensions*: belt, arm, dumbbell, forearm
 - *Metric Dimensions*: roll, pitch, yaw, total acceleration, gyration (x,y,z), acceleration (x,y,z), magnet (x,y,z)
+
 
 ###Cross Validation
 I have randomly selected 75% of “pml-training.csv” to train my models. 
@@ -21,7 +22,7 @@ I have randomly selected 75% of “pml-training.csv” to train my models.
 
 
 ###Exploratory Data Analysis
-Initially, I would like to better understand my variables, and how they related to my outcome and one another. To do this, I have used the 
+Initially, I would like to better understand my variables, and how they related to my outcome and one another. I first apply the `summary(mainTrain1)` function on the dataset. 
 
 
 ```
