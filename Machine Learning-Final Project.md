@@ -37,11 +37,11 @@ diag(M) <- 0
 which(M > 0.8, arr.ind = T)
 ```
 This output revealed several correlated features. I've grouped these into "sets" below.
-- *Set 1*: yaw_belt	total_accel_belt	accel_belt_y	accel_belt_z	roll_belt
-- *Set 2*: accel_belt_x	magnet_belt_x	pitch_belt
-- *Set 3*: gyros_arm_x	gyros_arm_y
-- *Set 4*: accel_arm_x	magnet_arm_x	magnet_arm_y	magnet_arm_z
-- *Set 5*: pitch_dumbbell	yaw_dumbbell	accel_dumbbell_x	accel_dumbbell_z
-- *Set 6*: gyros_dumbbell_x	gyros_dumbbell_z	gyros_forearm_z	gyros_forearm_y
+- *Set 1*: yaw_belt, total_accel_belt, accel_belt_y, accel_belt_z, roll_belt
+- *Set 2*: accel_belt_x, magnet_belt_x, pitch_belt
+- *Set 3*: gyros_arm_x, gyros_arm_y
+- *Set 4*: accel_arm_x, magnet_arm_x, magnet_arm_y, magnet_arm_z
+- *Set 5*: pitch_dumbbell, yaw_dumbbell, accel_dumbbell_x, accel_dumbbell_z
+- *Set 6*: gyros_dumbbell_x, gyros_dumbbell_z, gyros_forearm_z, gyros_forearm_y
 
 
