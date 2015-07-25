@@ -19,8 +19,6 @@ To cleanse the data, I have removed features with missing data. With the remaini
 ###Cross Validation
 I have randomly selected 75% of “pml-training.csv” to train my models. 
 
-
-
 ###Exploratory Data Analysis
 Initially, I would like to better understand my variables, and how they related to my outcome and one another. I first apply the `summary(mainTrain1)` function on the dataset. From there, I started considering the relationships between the explanatory variables with Q-plots and Density plots.
 ```
@@ -62,17 +60,61 @@ modelFit1
 Therefore -- in order to reduce the number of features used -- I will select a single variable from each (or certain) set(s) to include in the model, rather than using PCA. 
 
 #####Model Selection
-The next step is to determine which model to use. I will consider the following methods (I've described results of each for reference): lda, qda, nb, gmb
+The next step is to determine which model to use. I will consider the following methods (I've described results of each for reference): lda, qda, nb
 - *Linear Discriminant Analysis (lda)*: accurary of 69.9%
 - *Quadratic Discriminant Analysis (qda)*: accuracy of 89.3%
 - *.... (xx)*: accuracy of
 - *Naive Bayes (nb)*: this calculation exceeded 10+ minutes therefore I decided not to use it
 
 The [.....] model was the best balance of accuracy and efficiency/scalability, therefore I will move forward with this model.
+```
+modelQDA <- train(classe~., data = trainingInput, method = "qda"); modelQDA
 
+Quadratic Discriminant Analysis 
+
+14718 samples
+   52 predictor
+    5 classes: 'A', 'B', 'C', 'D', 'E' 
+
+No pre-processing
+Resampling: Bootstrapped (25 reps) 
+
+Summary of sample sizes: 14718, 14718, 14718, 14718, 14718, 14718, ... 
+
+Resampling results
+  Accuracy   Kappa      Accuracy SD  Kappa SD   
+  0.8948217  0.8670708  0.004669971  0.005868669
+```
 
 #####Variable Importance
-The final step in my model selection process is to select 5 features to include in the model (as requested in the project instructions). Note that I would generally keep all features in the model. To reduce the number of features, I will use Variable Importance (`varImp()`) in the caret package. Also, as previously mentioned, I will only keep a single feature from each of my highly correlated "sets" mentioned in the Principle Component section above. 
+The final step in my model selection process is to select 5 features to include in the model (as requested in the project instructions). Note that I would generally keep all features in the model. To reduce the number of features, I will use Variable Importance (`varImp()`) in the caret package. To select the final faetures, I have averaged the area under the curve (AUC) for the ROC calculation of each feature. Also, as previously mentioned, I will only keep a single feature from each of my highly correlated "sets" mentioned in the Principle Component section above. 
+```
+modelQDAImp <- varImp(modelFit3, scale=FALSE)
+modelQDAImp
+```
+
+Below is the final model I used, a Quadratic Discriminant Model limited to 5 predictors. Unfortunately, the Accuracy falls from 89.3% to 50.0%. 
+
+```
+trainingFinal <- subset(training, select= c(classe, pitch_forearm, roll_dumbbell, magnet_arm_x, magnet_belt_y, accel_forearm_x))
+modelFitFinal <- train(classe~., data = trainingFinal, method = "qda"); modelFitFinal
+
+Quadratic Discriminant Analysis 
+
+14718 samples
+    5 predictor
+    5 classes: 'A', 'B', 'C', 'D', 'E' 
+
+No pre-processing
+Resampling: Bootstrapped (25 reps) 
+
+Summary of sample sizes: 14718, 14718, 14718, 14718, 14718, 14718, ... 
+
+Resampling results
+  Accuracy   Kappa      Accuracy SD  Kappa SD   
+  0.5002189  0.3671346  0.007301924  0.009091167
+```
+
 
 
 
