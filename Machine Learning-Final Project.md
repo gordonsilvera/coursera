@@ -24,6 +24,11 @@ I have randomly selected 75% of “pml-training.csv” to train my models.
 Initially, I would like to better understand my variables, and how they related to my outcome and one another. To do this, I have used the 
 
 
+```
+Code Sample
+```
+
+
 
 
 
