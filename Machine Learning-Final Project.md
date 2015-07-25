@@ -22,12 +22,24 @@ I have randomly selected 75% of “pml-training.csv” to train my models.
 
 
 ###Exploratory Data Analysis
-Initially, I would like to better understand my variables, and how they related to my outcome and one another. I first apply the `summary(mainTrain1)` function on the dataset. From there, I started considering the relationships between the explanatory variables with Q-plots and 
+Initially, I would like to better understand my variables, and how they related to my outcome and one another. I first apply the `summary(mainTrain1)` function on the dataset. From there, I started considering the relationships between the explanatory variables with Q-plots and Density plots.
 ```
 qplot(pitch_dumbbell, total_accel_dumbbell, colour=classe, data=training)   # sample Q-plot
 qplot(total_accel_forearm, colour=classe, data=training, geom="density")    # sample Density Plots
 ```
-Q-plots and Density Plots show some noticable differences in the classes; however, it is evident  that we will consider interations between sets of explanatory features -- I will use principle components for this. 
+
+###Model Development
+
+#####Initial Model
+At first, I created a Linear Discriminant Analysis model that included all numerical features without pre-processing. This generated an Accuracy of 69.9%. I will use this as a benchmark going forward. 
+
+```
+trainingInput <- training[,(7:59)]
+modelNB = train(classe~., data=trainingInput, method="nb")    # method = "nb", "lda", "gbm"
+predNB = predict(modelNB, trainingInput)
+
+modelFit0 <- train(classe~., data = trainingInput, method = "lda"); modelFit0
+```
 
 #####Principle Components Analysis
 I started by finding the most correlated variables among my potential features. 
@@ -43,5 +55,8 @@ This output revealed several correlated features. I've grouped these into "sets"
 - *Set 4*: accel_arm_x, magnet_arm_x, magnet_arm_y, magnet_arm_z
 - *Set 5*: pitch_dumbbell, yaw_dumbbell, accel_dumbbell_x, accel_dumbbell_z
 - *Set 6*: gyros_dumbbell_x, gyros_dumbbell_z, gyros_forearm_z, gyros_forearm_y
+
+Next, I developed a model with principle components with the `preProcess()` function (see model below). However, this generated an accuracy of 52% versus 70% for a model without PCA. Therefore -- in order to reduce the number of features used -- I will select a single variable from each (or certain) set(s) to include in the model, rather than using PCA. 
+
 
 
