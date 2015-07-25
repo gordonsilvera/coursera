@@ -35,14 +35,12 @@ At first, I created a Linear Discriminant Analysis model that included all numer
 
 ```
 trainingInput <- training[,(7:59)]
-modelNB = train(classe~., data=trainingInput, method="nb")    # method = "nb", "lda", "gbm"
-predNB = predict(modelNB, trainingInput)
-
-modelFit0 <- train(classe~., data = trainingInput, method = "lda"); modelFit0
+modelFit0 <- train(classe~., data = trainingInput, method = "lda")
+modelFit0
 ```
 
 #####Principle Components Analysis
-I started by finding the most correlated variables among my potential features. 
+I then considered relationships between the explanatory features using Principle Componnets. I started by finding the most correlated variables among my potential features. 
 ```
 M <- abs(cor(training[,7:58]))
 diag(M) <- 0
@@ -56,7 +54,27 @@ This output revealed several correlated features. I've grouped these into "sets"
 - *Set 5*: pitch_dumbbell, yaw_dumbbell, accel_dumbbell_x, accel_dumbbell_z
 - *Set 6*: gyros_dumbbell_x, gyros_dumbbell_z, gyros_forearm_z, gyros_forearm_y
 
-Next, I developed a model with principle components with the `preProcess()` function (see model below). However, this generated an accuracy of 52% versus 70% for a model without PCA. Therefore -- in order to reduce the number of features used -- I will select a single variable from each (or certain) set(s) to include in the model, rather than using PCA. 
+Next, I developed a model with principle components with the `preProcess()` function (see model below). However, this generated an accuracy of 52% versus 70% for a model without PCA. 
+```
+modelFit1 <- train(classe~., data = trainingInput, method = "lda", preProcess=c("pca"))
+modelFit1
+```
+Therefore -- in order to reduce the number of features used -- I will select a single variable from each (or certain) set(s) to include in the model, rather than using PCA. 
+
+#####Model Selection
+The next step is to determine which model to use. I will consider the following methods (I've described results of each for reference): lda, qda, nb, gmb
+- *Linear Discriminant Analysis (lda)*: accurary of 69.9%
+- *Quadratic Discriminant Analysis (qda)*: accuracy of 89.3%
+- *.... (xx)*: accuracy of
+- *Naive Bayes (nb)*: this calculation exceeded 10+ minutes therefore I decided not to use it
+
+The [.....] model was the best balance of accuracy and efficiency/scalability, therefore I will move forward with this model.
+
+
+#####Variable Importance
+The final step in my model selection process is to select 5 features to include in the model (as requested in the project instructions). Note that I would generally keep all features in the model. To reduce the number of features, I will use Variable Importance (`varImp()`) in the caret package. Also, as previously mentioned, I will only keep a single feature from each of my highly correlated "sets" mentioned in the Principle Component section above. 
+
+
 
 
 
