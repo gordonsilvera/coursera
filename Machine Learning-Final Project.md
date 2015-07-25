@@ -86,34 +86,56 @@ Resampling results
   0.8948217  0.8670708  0.004669971  0.005868669
 ```
 
-#####Variable Importance
-The final step in my model selection process is to select 5 features to include in the model (as requested in the project instructions). Note that I would generally keep all features in the model. To reduce the number of features, I will use Variable Importance (`varImp()`) in the caret package. To select the final faetures, I have averaged the area under the curve (AUC) for the ROC calculation of each feature. Also, as previously mentioned, I will only keep a single feature from each of my highly correlated "sets" mentioned in the Principle Component section above. 
+#####Variable Importance & Selection
+The final step in my model selection process is to reduce the number of features to include in the model. To do this, I will use Variable Importance (`varImp()`) in the caret package. To select the final features, I have averaged the area under the curve (AUC) for the ROC calculation across each outcome variable (classe). 
+
 ```
-modelQDAImp <- varImp(modelFit3, scale=FALSE)
+modelQDAImp <- varImp(modelQDA, useModel = TRUE, scale = FALSE)
 modelQDAImp
 ```
 
-Below is the final model I used, a Quadratic Discriminant Model limited to 5 predictors. Unfortunately, the Accuracy falls from 89.3% to 50.0%. 
+However, after attempting to reduce the number of features in the QDA model, I have found that the accuracy is reduced in all situations. I have also applied PCA pre-processing and standardization to this model, and it does now perform as well. Therefore I will move forward with the modelQDA specified above.
+
+
+#####Cross Validation & Out of Sample Accuracy
+As mentioned earlier, I omitted 25% of the data from "pml-training.csv" for testing. Using the steps below, I have calculated the out-of-sample accuracy of [XX%]. 
 
 ```
-trainingFinal <- subset(training, select= c(classe, pitch_forearm, roll_dumbbell, magnet_arm_x, magnet_belt_y, accel_forearm_x))
-modelFitFinal <- train(classe~., data = trainingFinal, method = "qda"); modelFitFinal
+predQDA <- predict(modelQDA, newdata = testing); predQDA
+confusionMatrix(data = predQDA, testing$classe)
 
-Quadratic Discriminant Analysis 
+Confusion Matrix and Statistics
 
-14718 samples
-    5 predictor
-    5 classes: 'A', 'B', 'C', 'D', 'E' 
+          Reference
+Prediction    A    B    C    D    E
+         A 1301   45    0    1    0
+         B   42  802   45    5   27
+         C   20   91  803  104   40
+         D   27    6    4  683   16
+         E    5    5    3   11  818
 
-No pre-processing
-Resampling: Bootstrapped (25 reps) 
+Overall Statistics
+               Accuracy : 0.8987         
+                 95% CI : (0.8899, 0.907)
+    No Information Rate : 0.2845         
+    P-Value [Acc > NIR] : < 2.2e-16      
+                                         
+                  Kappa : 0.872          
+ Mcnemar's Test P-Value : < 2.2e-16      
 
-Summary of sample sizes: 14718, 14718, 14718, 14718, 14718, 14718, ... 
-
-Resampling results
-  Accuracy   Kappa      Accuracy SD  Kappa SD   
-  0.5002189  0.3671346  0.007301924  0.009091167
+Statistics by Class:
+                     Class: A Class: B Class: C Class: D Class: E
+Sensitivity            0.9326   0.8451   0.9392   0.8495   0.9079
+Specificity            0.9869   0.9699   0.9370   0.9871   0.9940
+Pos Pred Value         0.9659   0.8708   0.7590   0.9280   0.9715
+Neg Pred Value         0.9736   0.9631   0.9865   0.9710   0.9796
+Prevalence             0.2845   0.1935   0.1743   0.1639   0.1837
+Detection Rate         0.2653   0.1635   0.1637   0.1393   0.1668
+Detection Prevalence   0.2747   0.1878   0.2157   0.1501   0.1717
+Balanced Accuracy      0.9598   0.9075   0.9381   0.9183   0.9509
 ```
+
+
 
 
 
