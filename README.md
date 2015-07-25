@@ -1,7 +1,7 @@
 # Coursera: Machine Learning Final Project
 7/25/15
 
-##About the Dataset
+###About the Dataset
 Dumbbell Biceps Curl in five different fashions:
 - Class A: exactly according to the specification 
 - Class B: throwing the elbows to the front 
@@ -12,12 +12,12 @@ Dumbbell Biceps Curl in five different fashions:
 Read more: http://groupware.les.inf.puc-rio.br/har#ixzz3gv6LfTpo
 
 
-##CROSS VALIDATION
+###Cross Validation
 I have randomly selected 75% of “pml-training.csv” (mainTrain) to train my models (training). 
 
 
 
-##EXPLORATORY DATA ANALYSIS
+###Exploratory Data Analysis
 Initially, I would like to better understand my variables, and how they related to my outcome and one another. To do this, I have used the 
 
 
