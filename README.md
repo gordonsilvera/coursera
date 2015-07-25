@@ -1,4 +1,4 @@
-# Coursera: Machine Learning Final Project
+## Coursera: Machine Learning Final Project
 7/25/15
 
 ###About the Dataset
@@ -11,9 +11,12 @@ Dumbbell Biceps Curl in five different fashions:
 
 Read more: http://groupware.les.inf.puc-rio.br/har#ixzz3gv6LfTpo
 
+To cleanse the data, I have removed features with missing data. With the remaining features, I realize that they are aggregated into two types of groups. 
+- Body Dimensions: belt, arm, dumbbell, forearm
+- Metric Dimensions: roll, pitch, yaw, total acceleration, gyration (x,y,z), acceleration (x,y,z), magnet (x,y,z)
 
 ###Cross Validation
-I have randomly selected 75% of “pml-training.csv” (mainTrain) to train my models (training). 
+I have randomly selected 75% of “pml-training.csv” to train my models. 
 
 
 
