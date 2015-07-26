@@ -2,7 +2,7 @@
 7/25/15
 
 ###About the Dataset
-Dumbbell Biceps Curl in five different fashions:
+This dataset tracks various forms of movements while an individual lifts dumbbells. The outcome variable, "classe", is the type of **Dumbbell Biceps Curl** in five different fashions:
 - Class A: exactly according to the specification 
 - Class B: throwing the elbows to the front 
 - Class C: lifting the dumbbell only halfway
@@ -11,16 +11,22 @@ Dumbbell Biceps Curl in five different fashions:
 
 Read more: http://groupware.les.inf.puc-rio.br/har#ixzz3gv6LfTpo
 
-To cleanse the data, I have removed features with missing data. With the remaining features, I realize that they are aggregated into two types of groups. To simply certain portions of the analysis, I will analyze data within these "sub-feature" groupings. 
+To cleanse the data, I have removed variables (features) with missing data. With the remaining features, I realized that they were aggregated into two types of groups. To simply certain portions of the analysis, I will analyze data within these "sub-feature" groupings. 
 - *Body Dimensions*: belt, arm, dumbbell, forearm
 - *Metric Dimensions*: roll, pitch, yaw, total acceleration, gyration (x,y,z), acceleration (x,y,z), magnet (x,y,z)
 
 
 ###Cross Validation
-I have randomly selected 75% of “pml-training.csv” to train my models. 
+For cross validation, I have randomly selected 75% of “pml-training.csv” to train my models. I used the following code snippet to do so:
+```
+inTrain <- createDataPartition(y=mainTrain1$classe, p=0.75, list=FALSE)    # mainTrain1 has null values removed
+training <- mainTrain1[inTrain,]
+testing <- mainTrain1[-inTrain,]
+dim(training); dim(testing)
+```
 
 ###Exploratory Data Analysis
-Initially, I would like to better understand my variables, and how they related to my outcome and one another. I first apply the `summary(mainTrain1)` function on the dataset. From there, I started considering the relationships between the explanatory variables with Q-plots and Density plots.
+Initially, I would like to better understand my variables, as well as how they related to one another and my outcome variable. I first applied the `summary(mainTrain1)` function on the dataset. From there, I started considering the relationships between the explanatory variables with Q-plots and Density plots.
 ```
 qplot(pitch_dumbbell, total_accel_dumbbell, colour=classe, data=training)   # sample Q-plot
 qplot(total_accel_forearm, colour=classe, data=training, geom="density")    # sample Density Plots
@@ -63,10 +69,9 @@ Therefore -- in order to reduce the number of features used -- I will select a s
 The next step is to determine which model to use. I will consider the following methods (I've described results of each for reference): lda, qda, nb
 - *Linear Discriminant Analysis (lda)*: accurary of 69.9%
 - *Quadratic Discriminant Analysis (qda)*: accuracy of 89.3%
-- *.... (xx)*: accuracy of
 - *Naive Bayes (nb)*: this calculation exceeded 10+ minutes therefore I decided not to use it
 
-The [.....] model was the best balance of accuracy and efficiency/scalability, therefore I will move forward with this model.
+The Quadratic Discriminant Analysis model (modelQDA) was the best balance of accuracy and efficiency/scalability, therefore I will move forward with this model. Note that I also trained this model with standardized variables (`preProcess=c("centered",scaled")`), but it did not outperform the non-transformed version of the model.
 ```
 modelQDA <- train(classe~., data = trainingInput, method = "qda"); modelQDA
 
@@ -98,7 +103,7 @@ However, after attempting to reduce the number of features in the QDA model, I h
 
 
 #####Cross Validation & Out of Sample Accuracy
-As mentioned earlier, I omitted 25% of the data from "pml-training.csv" for testing. Using the steps below, I have calculated the out-of-sample accuracy of [XX%]. 
+As mentioned earlier, I omitted 25% of the data from "pml-training.csv" for testing. Using the steps below, I have calculated the **out-of-sample accuracy of 89.87%**.
 
 ```
 predQDA <- predict(modelQDA, newdata = testing); predQDA
