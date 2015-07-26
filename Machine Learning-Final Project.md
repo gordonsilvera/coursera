@@ -1,6 +1,8 @@
 ## Coursera: Machine Learning Final Project
+Gordon Silvera
 7/25/15
-R Code: [https://github.com/gordonsilvera/coursera/blob/master/machine-learning.R]
+
+R Code: (https://github.com/gordonsilvera/coursera/blob/master/machine-learning.R)
 
 ###About the Dataset
 This dataset tracks various forms of movements while an individual lifts dumbbells. The outcome variable, "classe", is the type of **Dumbbell Biceps Curl** in five different fashions:
