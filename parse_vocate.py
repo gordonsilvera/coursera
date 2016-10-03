@@ -1,7 +1,7 @@
 import re
 import csv
 
-filename = "C:/Users/gordon-local/Downloads/vocate.sql"
+filename = "C:/Users/gordon-local/Downloads/vocate (update).sql"
 text_file = open(filename, "r")
 lines = text_file.readlines()
 
